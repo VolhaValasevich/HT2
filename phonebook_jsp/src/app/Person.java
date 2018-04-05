@@ -69,12 +69,12 @@ public class Person {
 	{
 	    if (empty_allowed)
 	    {
-	    	Matcher matcher = Pattern.compile("[\\w-]{0,150}").matcher(fml_name_part);
+	    	Matcher matcher = Pattern.compile("^[А-Яа-яЁёA-Za-z0-9_-]{0,150}$").matcher(fml_name_part);
 	    	return matcher.matches();
 	    }
 	    else
 	    {
-	    	Matcher matcher = Pattern.compile("[\\w-]{1,150}").matcher(fml_name_part);
+	    	Matcher matcher = Pattern.compile("^[А-Яа-яЁёA-Za-z0-9_-]{1,150}$").matcher(fml_name_part);
 	    	return matcher.matches();
 	    }
 	    

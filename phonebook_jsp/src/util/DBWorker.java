@@ -44,7 +44,7 @@ public class DBWorker {
 		{
 			Class.forName("com.mysql.jdbc.Driver");
 			//connect = DriverManager.getConnection("jdbc:mysql://localhost/phonebook?user=root&password=admin&useUnicode=true&characterEncoding=UTF-8&characterSetResults=utf8&connectionCollation=utf8_general_ci");
-			connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/phonebook", "root", "admin");
+			connect = DriverManager.getConnection("jdbc:mysql://localhost/phonebook", "root", "admin");
 			statement = connect.createStatement();
 			ResultSet resultSet = statement.executeQuery(query);
 			return resultSet;
@@ -67,7 +67,7 @@ public class DBWorker {
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			connect = DriverManager.getConnection("jdbc:mysql://localhost/phonebook?user=root&password=123456&useUnicode=true&characterEncoding=UTF-8&characterSetResults=utf8&connectionCollation=utf8_general_ci");
+			connect = DriverManager.getConnection("jdbc:mysql://localhost/phonebook", "root", "admin");
 			statement = connect.createStatement();
 			this.affected_rows = statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 		
