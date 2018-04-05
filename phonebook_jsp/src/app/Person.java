@@ -9,55 +9,46 @@ import java.util.regex.Pattern;
 import util.DBWorker;
 
 public class Person {
-	
+
 	// Данные записи о человеке.
 	private String id = "";
 	private String name = "";
 	private String surname = "";
 	private String middlename = "";
-	private HashMap<String,String> phones = new HashMap<String,String>();
-	
-	// Конструктор для создания записи о человеке на основе данных из БД. 
-	public Person(String id, String name, String surname, String middlename)
-	{
+	private HashMap<String, String> phones = new HashMap<String, String>();
+
+	// Конструктор для создания записи о человеке на основе данных из БД.
+	public Person(String id, String name, String surname, String middlename) {
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.middlename = middlename;
-		
+
 		// Извлечение телефонов человека из БД.
 		ResultSet db_data = DBWorker.getInstance().getDBData("SELECT * FROM `phone` WHERE `owner`=" + id);
-		
-		try
-		{
+
+		try {
 			// Если у человека нет телефонов, ResultSet будет == null.
-			if (db_data != null)
-			{
-				while (db_data.next())
-				{
+			if (db_data != null) {
+				while (db_data.next()) {
 					this.phones.put(db_data.getString("id"), db_data.getString("number"));
 				}
-			}	
-		}
-		catch (SQLException e)
-		{
+			}
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// Конструктор для создания пустой записи о человеке.
-	public Person()
-	{
+	public Person() {
 		this.id = "0";
 		this.name = "";
 		this.surname = "";
 		this.middlename = "";
-	}	
+	}
 
-	// Конструктор для создания записи, предназначенной для добавления в БД. 
-	public Person(String name, String surname, String middlename)
-	{
-		this.id = "0";
+	// Конструктор для создания записи, предназначенной для добавления в БД.
+	public Person(String name, String surname, String middlename) {
 		this.name = name;
 		this.surname = surname;
 		this.middlename = middlename;
@@ -65,80 +56,68 @@ public class Person {
 
 	// Валидация частей ФИО. Для отчества можно передать второй параетр == true,
 	// тогда допускается пустое значение.
-	public boolean validateFMLNamePart(String fml_name_part, boolean empty_allowed)
-	{
-	    if (empty_allowed)
-	    {
-	    	Matcher matcher = Pattern.compile("^[А-Яа-яЁёA-Za-z0-9_-]{0,150}$").matcher(fml_name_part);
-	    	return matcher.matches();
-	    }
-	    else
-	    {
-	    	Matcher matcher = Pattern.compile("^[А-Яа-яЁёA-Za-z0-9_-]{1,150}$").matcher(fml_name_part);
-	    	return matcher.matches();
-	    }
-	    
+	public static boolean validateFMLNamePart(String fml_name_part, boolean empty_allowed) {
+		if (empty_allowed) {
+			Matcher matcher = Pattern.compile("[\\wа-яА-ЯЁё-]{0,150}").matcher(fml_name_part);
+			return matcher.matches();
+		} else {
+			Matcher matcher = Pattern.compile("[\\wа-яА-ЯЁё-]{1,150}").matcher(fml_name_part);
+			return matcher.matches();
+		}
+
 	}
-	
+
+	public static boolean validatePhone(String number) {
+		Matcher matcher = Pattern.compile("[\\d+#-]{2,50}").matcher(number);
+		return matcher.matches();
+	}
+
 	// ++++++++++++++++++++++++++++++++++++++
 	// Геттеры и сеттеры
-	public String getId()
-	{
+	public String getId() {
 		return this.id;
 	}
-	
-	public String getName()
-	{
+
+	public String getName() {
 		return this.name;
 	}
 
-	public String getSurname()
-	{
+	public String getSurname() {
 		return this.surname;
 	}
-	
-	public String getMiddlename()
-	{
-		if ((this.middlename != null)&&(!this.middlename.equals("null")))
-		{
+
+	public String getMiddlename() {
+		if ((this.middlename != null) && (!this.middlename.equals("null"))) {
 			return this.middlename;
-		}
-		else
-		{
+		} else {
 			return "";
 		}
 	}
 
-	public HashMap<String,String> getPhones()
-	{
+	public HashMap<String, String> getPhones() {
 		return this.phones;
 	}
-	
-	public void setId(String id)
-	{
+
+	public void setId(String id) {
 		this.id = id;
 	}
-	
-	public void setName(String name)
-	{
+
+	public void setName(String name) {
 		this.name = name;
 	}
 
-	public void setSurname(String surname)
-	{
+	public void setSurname(String surname) {
 		this.surname = surname;
 	}
-	
-	public void setMiddlename(String middlename)
-	{
+
+	public void setMiddlename(String middlename) {
 		this.middlename = middlename;
 	}
 
-	public void setPhones(HashMap<String,String> phones)
-	{
+	public void setPhones(HashMap<String, String> phones) {
 		this.phones = phones;
 	}
 	// Геттеры и сеттеры
 	// --------------------------------------
-	
+
 }
